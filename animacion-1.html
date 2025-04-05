@@ -1,0 +1,750 @@
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animación Scroll Wow</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: #f5f5f5;
+      }
+
+      .section {
+        height: 50vh; /* Reducir la altura de las secciones */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow-x: hidden;
+        margin-bottom: 1rem; /* Reducir el margen inferior entre secciones */
+      }
+
+      .box {
+        opacity: 0;
+        transform: translateX(100px);
+        transition: all 1s ease-out;
+        background: white;
+        padding: 2rem 3rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        font-size: 1.5rem;
+        max-width: 600px;
+      }
+
+      .box.left {
+        transform: translateX(-100px);
+      }
+
+      .box.visible {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        font-size: 1.2rem;
+        color: #555;
+      }
+
+      /* Hero Section Styles */
+      .hero {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+        background: #fff;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 1s ease-out;
+      }
+
+      .hero.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .hero-image {
+        max-width: 100%;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: #333;
+      }
+
+      .hero-description {
+        font-size: 1.2rem;
+        color: #555;
+        margin-bottom: 1.5rem;
+      }
+
+      .hero-button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+        color: #fff;
+        background: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .hero-button:hover {
+        background: #0056b3;
+      }
+
+      /* Feature Section Styles */
+      .feature {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .feature-image {
+        flex: 1;
+        opacity: 0;
+        transform: translateX(-100px);
+        transition: all 1s ease-out;
+      }
+
+      .feature-image.visible {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .feature-img {
+        max-width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-content {
+        flex: 1;
+        opacity: 0;
+        transform: translateX(100px);
+        transition: all 1s ease-out;
+      }
+
+      .feature-content.visible {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .feature-title {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #333;
+      }
+
+      .feature-description {
+        font-size: 1.2rem;
+        color: #555;
+        margin-bottom: 1.5rem;
+      }
+
+      .feature-button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+        color: #fff;
+        background: #28a745;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .feature-button:hover {
+        background: #218838;
+      }
+
+      /* Contact Section Styles */
+      .contact {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem;
+        background: linear-gradient(135deg, #f9f9f9, #e3f2fd);
+        overflow: hidden; /* Asegura que no haya scroll */
+      }
+
+      .contact-container {
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .contact-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        overflow: visible; /* Asegura que no haya scroll en el formulario */
+      }
+
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 0.8rem;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: border-color 0.3s ease, transform 0.3s ease;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus {
+        border-color: #007bff;
+        outline: none;
+        transform: scale(1.02);
+      }
+
+      .contact-button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1.2rem;
+        color: #fff;
+        background: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.3s ease;
+      }
+
+      .contact-button:hover {
+        background: #0056b3;
+        transform: scale(1.1);
+      }
+
+      /* Botones con tonos de naranja */
+      .hero-button,
+      .feature-button,
+      .contact-button {
+        background: #ff9800; /* Naranja */
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.3s ease;
+      }
+
+      .hero-button:hover,
+      .feature-button:hover,
+      .contact-button:hover {
+        background: #e68900; /* Naranja más oscuro */
+        transform: scale(1.05); /* Efecto de agrandamiento */
+      }
+
+      /* Otros estilos de botones */
+      .feature-button {
+        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
+      }
+
+      .contact-button {
+        font-size: 1.2rem;
+        padding: 0.8rem 1.5rem;
+      }
+
+      /* Estilos para la sección de elementos flotantes */
+      .floating-cards {
+        position: relative;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f5f5f5;
+      }
+
+      .floating-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .floating-card {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        background: #ff9800;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        font-size: 1rem;
+        text-align: center;
+        opacity: 0;
+        transform: scale(0.8);
+        transition: all 1s ease-out;
+      }
+
+      .floating-card.center-card {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(1);
+        transition: all 1s ease-out;
+      }
+
+      .floating-card.top-left {
+        left: 35%;
+        top: 30%;
+        transform: translate(-50%, -50%);
+      }
+
+      .floating-card.top-right {
+        left: 65%;
+        top: 25%;
+        transform: translate(-50%, -50%);
+      }
+
+      .floating-card.bottom-left {
+        left: 30%;
+        top: 70%;
+        transform: translate(-50%, -50%);
+      }
+
+      .floating-card.bottom-right {
+        left: 70%;
+        top: 75%;
+        transform: translate(-50%, -50%);
+      }
+
+      /* Animación al hacer scroll */
+      .floating-container.active .floating-card {
+        opacity: 1;
+        transform: scale(1);
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  </head>
+  <body>
+    <!-- Hero Section -->
+    <div class="hero">
+      <img
+        src="https://picsum.photos/1200/400"
+        alt="Hero Image"
+        class="hero-image"
+      />
+      <div class="hero-content">
+        <h1 class="hero-title">Bienvenido a la Animación Hero</h1>
+        <p class="hero-description">
+          Descubre cómo implementar animaciones increíbles en tu sitio web con
+          facilidad.
+        </p>
+        <button class="hero-button">Explorar más</button>
+      </div>
+    </div>
+
+    <!-- Secciones existentes -->
+    <div class="section">
+      <div class="box left">👋 Bienvenido a la experiencia</div>
+    </div>
+
+    <!-- Nueva sección Feature -->
+    <div class="section feature">
+      <div class="feature-image">
+        <img
+          src="https://picsum.photos/400/400"
+          alt="Feature Image"
+          class="feature-img"
+        />
+      </div>
+      <div class="feature-content">
+        <h2 class="feature-title">Increíble Funcionalidad</h2>
+        <p class="feature-description">
+          Aprende cómo esta funcionalidad puede mejorar tu experiencia de
+          usuario y hacer tu sitio más atractivo.
+        </p>
+        <button class="feature-button">Descubrir más</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="box right">✨ Este texto aparece desde la derecha</div>
+    </div>
+
+    <div class="section">
+      <div class="box left">🚀 Scroll con efecto wow activado</div>
+    </div>
+
+    <div class="section">
+      <div class="box right">🎉 Fácil de implementar y personalizar</div>
+    </div>
+
+    <!-- Secciones adicionales -->
+    <div class="section">
+      <div class="box left">🌟 Agrega más contenido para probar el scroll</div>
+    </div>
+
+    <div class="section">
+      <div class="box right">📚 Aprende más sobre animaciones web</div>
+    </div>
+
+    <div class="section">
+      <div class="box left">💡 Experimenta con diferentes estilos</div>
+    </div>
+
+    <div class="section">
+      <div class="box right">🌍 Haz que tu sitio sea más interactivo</div>
+    </div>
+
+    <div class="section">
+      <div class="box left">🎨 Personaliza los colores y diseños</div>
+    </div>
+
+    <!-- Sección de Formulario de Contacto -->
+    <div class="section contact">
+      <div class="contact-container">
+        <h2 class="contact-title">Contáctanos</h2>
+        <p class="contact-description">
+          ¿Tienes alguna pregunta o comentario? ¡Nos encantaría saber de ti!
+        </p>
+        <form class="contact-form">
+          <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" id="name" name="name" placeholder="Tu nombre" />
+          </div>
+          <div class="form-group">
+            <label for="email">Correo Electrónico</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Tu correo electrónico"
+            />
+          </div>
+          <div class="form-group">
+            <label for="message">Mensaje</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="4"
+              placeholder="Escribe tu mensaje aquí"
+            ></textarea>
+          </div>
+          <button type="submit" class="contact-button">Enviar</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const boxes = document.querySelectorAll(
+          ".box, .hero, .feature-image, .feature-content, .contact-container"
+        );
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+              } else {
+                entry.target.classList.remove("visible");
+              }
+            });
+          },
+          {
+            threshold: 0.3,
+          }
+        );
+
+        boxes.forEach((box) => {
+          observer.observe(box);
+        });
+
+        // Animación con GSAP para la sección Feature
+        const featureImage = document.querySelector(".feature-image");
+        const featureTitle = document.querySelector(".feature-title");
+        const featureDescription = document.querySelector(
+          ".feature-description"
+        );
+        const featureButton = document.querySelector(".feature-button");
+
+        // Configuración inicial de GSAP
+        gsap.set(
+          [featureImage, featureTitle, featureDescription, featureButton],
+          {
+            opacity: 0,
+            y: 30,
+          }
+        );
+
+        // Configuración específica para la imagen (aparece desde la izquierda)
+        gsap.set(featureImage, {
+          x: -100, // Desplazamiento inicial desde la izquierda
+        });
+
+        const featureObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                // Animar imagen primero
+                gsap.to(featureImage, {
+                  opacity: 1,
+                  x: 0, // Imagen vuelve a su posición original
+                  duration: 1,
+                  ease: "power3.out",
+                });
+
+                // Animar contenido escalonado (título, descripción, botón)
+                gsap.to([featureTitle, featureDescription, featureButton], {
+                  opacity: 1,
+                  y: 0,
+                  duration: 1,
+                  ease: "power3.out",
+                  stagger: 0.3, // Retraso entre cada elemento
+                  delay: 0.5, // Retraso después de la imagen
+                });
+              } else {
+                // Reiniciar animación al salir del viewport
+                gsap.set(featureImage, { opacity: 0, x: -100 });
+                gsap.set([featureTitle, featureDescription, featureButton], {
+                  opacity: 0,
+                  y: 30,
+                });
+              }
+            });
+          },
+          { threshold: 0.3 }
+        );
+
+        featureObserver.observe(document.querySelector(".feature"));
+      });
+
+      // Animación con GSAP
+      document.addEventListener("DOMContentLoaded", () => {
+        const contactContainer = document.querySelector(".contact-container");
+        const formElements = document.querySelectorAll(
+          ".contact-title, .contact-description, .form-group, .contact-button"
+        );
+
+        // Configuración inicial de GSAP
+        gsap.set(contactContainer, { opacity: 0, y: 50 });
+        gsap.set(formElements, { opacity: 0, y: 30 });
+
+        // IntersectionObserver para activar la animación al hacer scroll
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                // Animación del contenedor
+                gsap.to(contactContainer, {
+                  opacity: 1,
+                  y: 0,
+                  duration: 1,
+                  ease: "power3.out",
+                });
+
+                // Animación escalonada de los elementos del formulario
+                gsap.to(formElements, {
+                  opacity: 1,
+                  y: 0,
+                  duration: 1,
+                  ease: "bounce.out",
+                  stagger: 0.2, // Retraso entre elementos
+                });
+
+                observer.unobserve(contactContainer); // Detener observación
+              }
+            });
+          },
+          { threshold: 0.3 }
+        );
+
+        observer.observe(contactContainer);
+      });
+
+      // Inicializar Rellax.js
+      document.addEventListener("DOMContentLoaded", () => {
+        new Rellax(".rellax", {
+          center: true, // Centra el efecto parallax
+        });
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const heroImage = document.querySelector(".hero-image");
+        const heroTitle = document.querySelector(".hero-title");
+        const heroDescription = document.querySelector(".hero-description");
+        const heroButton = document.querySelector(".hero-button");
+
+        // Configuración inicial de GSAP
+        gsap.set([heroImage, heroTitle, heroDescription, heroButton], {
+          opacity: 0,
+          y: -50, // Comienzan desplazados hacia arriba
+        });
+
+        // IntersectionObserver para activar la animación al hacer scroll
+        const heroObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                // Animación escalonada para el contenido del Hero
+                gsap.to([heroImage, heroTitle, heroDescription, heroButton], {
+                  opacity: 1,
+                  y: 0, // Vuelven a su posición original
+                  duration: 1,
+                  ease: "power3.out",
+                  stagger: 0.3, // Retraso entre cada elemento
+                });
+
+                heroObserver.unobserve(entry.target); // Detener observación después de la animación
+              }
+            });
+          },
+          { threshold: 0.3 }
+        );
+
+        heroObserver.observe(document.querySelector(".hero"));
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const stickyElements = document.querySelectorAll(".sticky-element");
+
+        const stickyObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+              }
+            });
+          },
+          { threshold: 0.3 }
+        );
+
+        stickyElements.forEach((element) => {
+          stickyObserver.observe(element);
+        });
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Seleccionar elementos del Hero
+        const heroImage = document.querySelector(".hero-image");
+        const heroTitle = document.querySelector(".hero-title");
+        const heroDescription = document.querySelector(".hero-description");
+        const heroButton = document.querySelector(".hero-button");
+
+        // Configuración inicial de GSAP para el Hero
+        gsap.set([heroImage, heroTitle, heroDescription, heroButton], {
+          opacity: 0,
+          y: -50, // Comienzan desplazados hacia arriba
+        });
+
+        // IntersectionObserver para el Hero
+        const heroObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                // Animar elementos del Hero
+                gsap.to([heroImage, heroTitle, heroDescription, heroButton], {
+                  opacity: 1,
+                  y: 0, // Vuelven a su posición original
+                  duration: 1,
+                  ease: "power3.out",
+                  stagger: 0.3, // Retraso entre cada elemento
+                });
+
+                heroObserver.unobserve(entry.target); // Detener observación después de la animación
+              }
+            });
+          },
+          { threshold: 0.3 }
+        );
+
+        heroObserver.observe(document.querySelector(".hero"));
+
+        // Seleccionar elementos de la sección Feature
+        const featureImage = document.querySelector(".feature-image");
+        const featureTitle = document.querySelector(".feature-title");
+        const featureDescription = document.querySelector(
+          ".feature-description"
+        );
+        const featureButton = document.querySelector(".feature-button");
+
+        // Configuración inicial de GSAP para la sección Feature
+        gsap.set(
+          [featureImage, featureTitle, featureDescription, featureButton],
+          {
+            opacity: 0,
+            y: 30, // Comienzan desplazados hacia abajo
+          }
+        );
+
+        gsap.set(featureImage, {
+          x: -100, // Imagen comienza desplazada hacia la izquierda
+        });
+
+        // IntersectionObserver para la sección Feature
+        const featureObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                // Animar imagen primero
+                gsap.to(featureImage, {
+                  opacity: 1,
+                  x: 0, // Imagen vuelve a su posición original
+                  duration: 1,
+                  ease: "power3.out",
+                });
+
+                // Animar contenido escalonado (título, descripción, botón)
+                gsap.to([featureTitle, featureDescription, featureButton], {
+                  opacity: 1,
+                  y: 0,
+                  duration: 1,
+                  ease: "power3.out",
+                  stagger: 0.3, // Retraso entre cada elemento
+                  delay: 0.5, // Retraso después de la imagen
+                });
+
+                featureObserver.unobserve(entry.target); // Detener observación
+              }
+            });
+          },
+          { threshold: 0.3 }
+        );
+
+        featureObserver.observe(document.querySelector(".feature"));
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const floatingContainer = document.querySelector(".floating-container");
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("active");
+              } else {
+                entry.target.classList.remove("active");
+              }
+            });
+          },
+          { threshold: 0.5 }
+        );
+
+        observer.observe(floatingContainer);
+      });
+    </script>
+  </body>
+</html>

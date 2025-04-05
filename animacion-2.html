@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scroll View Animation</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        font-family: Arial, sans-serif;
+      }
+
+      section {
+        height: 100vh;
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      section img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+        transform: scale(1.2);
+        transition: transform 1.5s ease-out;
+      }
+
+      section.active img {
+        transform: scale(1);
+      }
+
+      /* Floating Elements */
+      .floating {
+        position: absolute;
+        opacity: 0;
+        transition: all 1s ease-out;
+        background: rgba(255, 255, 255, 1);
+        padding: 1rem 1.5rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        color: #333;
+        font-size: 1rem;
+        text-align: center;
+      }
+
+      .floating.center {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+        transition: opacity 3s ease-out, transform 3s ease-out;
+      }
+
+      .floating.top-left {
+        left: 40%; /* Más separado hacia la izquierda */
+        top: 42%; /* Bajado ligeramente */
+        transform: translate(-50%, -50%);
+      }
+
+      .floating.top-right {
+        left: 60%; /* Más separado hacia la derecha */
+        top: 43%; /* Subido ligeramente */
+        transform: translate(-50%, -50%);
+      }
+
+      .floating.bottom-left {
+        left: 42%; /* Separado más a la izquierda */
+        top: 58%; /* Separado más abajo */
+        transform: translate(-50%, -50%);
+      }
+
+      section.active .floating.center {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(360deg); /* 1 vuelta */
+      }
+
+      section.active .floating.top-left {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+        transition-delay: 1s;
+      }
+
+      section.active .floating.top-right {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+        transition-delay: 2s;
+      }
+
+      section.active .floating.bottom-left {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+        transition-delay: 3s;
+      }
+    </style>
+  </head>
+  <body>
+    <section id="section1">
+      <img src="https://picsum.photos/1920/1080?random=1" alt="Background 1" />
+      <div class="floating center">🎯 Centro</div>
+      <div class="floating top-left">🔺 Arriba Izquierda</div>
+      <div class="floating top-right">🔺 Arriba Derecha</div>
+      <div class="floating bottom-left">🔻 Abajo Izquierda</div>
+    </section>
+    <section id="section2">
+      <img src="https://picsum.photos/1920/1080?random=2" alt="Background 2" />
+      <div class="floating center">🎯 Centro</div>
+      <div class="floating top-left">🔺 Arriba Izquierda</div>
+      <div class="floating top-right">🔺 Arriba Derecha</div>
+      <div class="floating bottom-left">🔻 Abajo Izquierda</div>
+    </section>
+
+    <script>
+      const sections = document.querySelectorAll("section");
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+            } else {
+              entry.target.classList.remove("active");
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+
+      sections.forEach((section) => observer.observe(section));
+    </script>
+  </body>
+</html>
